@@ -1,0 +1,203 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+:root {
+    --primary-color: #3498db;
+    --secondary-color: #2c3e50;
+    --background-color: #ecf0f1;
+    --text-color: #34495e;
+    --light-text-color: #7f8c8d;
+    --accent-color: #e74c3c;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--background-color);
+}
+
+.site-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    padding: 1rem 0;
+}
+
+.site-header h5 {
+    color: white;
+    font-weight: 500;
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+.site-header .btn {
+    color: white;
+    border-color: white;
+    transition: all 0.3s ease;
+}
+
+.site-header .btn:hover {
+    background-color: white;
+    color: var(--primary-color);
+}
+
+.main-content {
+    padding: 3rem 0;
+}
+
+.display-4 {
+    font-weight: 700;
+    color: var(--secondary-color);
+    margin-bottom: 1rem;
+}
+
+.lead {
+    color: var(--light-text-color);
+    font-size: 1.2rem;
+}
+
+.product-card {
+    background-color: white;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: none;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.product-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+}
+
+.product-card .card-header {
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: 500;
+    padding: 1rem;
+}
+
+.product-card .card-body {
+    padding: 2rem;
+}
+
+.product-card .pricing-card-title {
+    color: var(--secondary-color);
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+.product-card ul {
+    margin-bottom: 2rem;
+}
+
+.product-card ul li {
+    margin-bottom: 0.5rem;
+    color: var(--light-text-color);
+}
+
+.product-card .btn {
+    background-color: var(--primary-color);
+    border: none;
+    color: white;
+    font-weight: 500;
+    padding: 0.75rem 2rem;
+    transition: all 0.3s ease;
+}
+
+.product-card .btn:hover {
+    background-color: var(--secondary-color);
+    transform: scale(1.05);
+}
+
+.contact-form {
+    background-color: white;
+    border-radius: 10px;
+    padding: 2rem;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.contact-form label {
+    font-weight: 500;
+    color: var(--secondary-color);
+}
+
+.contact-form .form-control {
+    border: 2px solid #bdc3c7;
+    border-radius: 5px;
+    padding: 0.75rem;
+    transition: all 0.3s ease;
+}
+
+.contact-form .form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+}
+
+.contact-form .btn {
+    background-color: var(--primary-color);
+    border: none;
+    color: white;
+    font-weight: 500;
+    padding: 0.75rem 2rem;
+    transition: all 0.3s ease;
+}
+
+.contact-form .btn:hover {
+    background-color: var(--secondary-color);
+    transform: scale(1.05);
+}
+
+.site-footer {
+    background-color: var(--secondary-color);
+    color: #ecf0f1;
+    padding: 3rem 0;
+    margin-top: 3rem;
+}
+
+.site-footer h5 {
+    color: var(--primary-color);
+    font-weight: 500;
+    margin-bottom: 1rem;
+}
+
+.site-footer .text-muted {
+    color: #bdc3c7 !important;
+}
+
+.site-footer a {
+    color: #bdc3c7;
+    transition: color 0.3s ease;
+}
+
+.site-footer a:hover {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(52, 152, 219, 0.05);
+}
+
+.table td {
+    vertical-align: middle;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
+.btn-outline-primary {
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary-color);
+    color: white;
+}

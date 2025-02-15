@@ -1,0 +1,30 @@
+{% extends 'catalog/base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="text-center mb-5">
+        <h1 class="display-4">Добро пожаловать в Skystore</h1>
+        <p class="lead">Лучшее место для покупки плагинов и примеров кода</p>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+            <div class="product-card">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">Удобный сервис рассылок</h4>
+                </div>
+                <div class="card-body">
+                    <h1 class="pricing-card-title">$140</h1>
+                    <ul class="list-unstyled mt-3 mb-4">
+                        <li>Неограниченная лицензия</li>
+                        <li>Поддержка</li>
+                        <li>Установка на сервер</li>
+                        <li>Получение обновлений</li>
+                    </ul>
+                    <button type="button" class="btn btn-lg btn-block btn-primary">Купить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
