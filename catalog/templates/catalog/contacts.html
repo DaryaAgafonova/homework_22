@@ -12,27 +12,31 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title mb-4">Наши контактные данные</h5>
-                    <table class="table table-striped">
-                        <tr>
-                            <td class="w-25">Страна</td>
-                            <td>USA</td>
-                        </tr>
-                        <tr>
-                            <td class="w-25">ИНН</td>
-                            <td>91-1144442</td>
-                        </tr>
-                        <tr>
-                            <td class="w-25">Адрес</td>
-                            <td>Redmond, WA, 98052-6399</td>
-                        </tr>
-                    </table>
+                    {% if contact_info %}
+                        <table class="table table-striped">
+                            <tr>
+                                <td class="w-25">Адрес</td>
+                                <td>{{ contact_info.address }}</td>
+                            </tr>
+                            <tr>
+                                <td class="w-25">Телефон</td>
+                                <td>{{ contact_info.phone }}</td>
+                            </tr>
+                            <tr>
+                                <td class="w-25">Email</td>
+                                <td>{{ contact_info.email }}</td>
+                            </tr>
+                        </table>
+                    {% else %}
+                        <p>Контактная информация отсутствует.</p>
+                    {% endif %}
                 </div>
             </div>
         </div>
         <div class="col-lg-4">
             <div class="contact-form">
                 <h5 class="mb-4">Свяжитесь с нами</h5>
-                <form method="post" action="">
+                <form id="contactForm" method="post" action="">
                     {% csrf_token %}
                     <div class="mb-3">
                         <label for="name" class="form-label">Имя</label>
@@ -52,4 +56,52 @@
         </div>
     </div>
 </div>
+
+<!-- Модальное окно -->
+<div class="modal fade" id="thankYouModal" tabindex="-1" aria-labelledby="thankYouModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="thankYouModalLabel">Спасибо за ваше сообщение!</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Мы получили ваше сообщение и свяжемся с вами в ближайшее время.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Закрыть</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('contactForm');
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        fetch('', {
+            method: 'POST',
+            body: new FormData(form),
+            headers: {
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                var modal = new bootstrap.Modal(document.getElementById('thankYouModal'));
+                modal.show();
+                form.reset();
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    });
+});
+</script>
 {% endblock %}
