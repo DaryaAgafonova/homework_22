@@ -1,30 +1,66 @@
 {% extends 'catalog/base.html' %}
 
-{% block content %}
-<div class="container">
-    <div class="text-center mb-5">
-        <h1 class="display-4">Добро пожаловать в Skystore</h1>
-        <p class="lead">Лучшее место для покупки плагинов и примеров кода</p>
-    </div>
+{% block title %}Главная - Skystore{% endblock %}
 
-    <div class="row justify-content-center">
-        <div class="col-md-4">
-            <div class="product-card">
-                <div class="card-header">
-                    <h4 class="my-0 font-weight-normal">Удобный сервис рассылок</h4>
-                </div>
-                <div class="card-body">
-                    <h1 class="pricing-card-title">$140</h1>
-                    <ul class="list-unstyled mt-3 mb-4">
-                        <li>Неограниченная лицензия</li>
-                        <li>Поддержка</li>
-                        <li>Установка на сервер</li>
-                        <li>Получение обновлений</li>
-                    </ul>
-                    <button type="button" class="btn btn-lg btn-block btn-primary">Купить</button>
+{% block content %}
+<h1 class="text-center mb-4">Наши товары</h1>
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+    {% for product in products %}
+    <div class="col">
+        <div class="card product-card">
+            <div class="product-image-container">
+                {% if product.image %}
+                    <img src="{{ product.image.url }}" class="product-image" alt="{{ product.name }}">
+                {% else %}
+                    <img src="https://via.placeholder.com/300x225" class="product-image" alt="{{ product.name }}">
+                {% endif %}
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">{{ product.name }}</h5>
+                <p class="card-text">{{ product.description|truncatechars:50 }}</p>
+                <div class="mt-auto">
+                    <p class="price">${{ product.price }}</p>
+                    <a href="{% url 'product_detail' product.pk %}" class="btn btn-primary w-100">Подробнее</a>
                 </div>
             </div>
         </div>
     </div>
+    {% empty %}
+    <div class="col-12">
+        <p class="text-center fs-4 text-muted">Нет доступных товаров</p>
+    </div>
+    {% endfor %}
 </div>
+
+{% if products.has_other_pages %}
+<nav aria-label="Page navigation" class="mt-4">
+    <ul class="pagination justify-content-center">
+        {% if products.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ products.previous_page_number }}">Предыдущая</a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+                <span class="page-link">Предыдущая</span>
+            </li>
+        {% endif %}
+
+        {% for i in products.paginator.page_range %}
+            <li class="page-item {% if products.number == i %}active{% endif %}">
+                <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+            </li>
+        {% endfor %}
+
+        {% if products.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ products.next_page_number }}">Следующая</a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+                <span class="page-link">Следующая</span>
+            </li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}
 {% endblock %}

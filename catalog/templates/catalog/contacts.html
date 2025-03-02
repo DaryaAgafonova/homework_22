@@ -1,54 +1,41 @@
 {% extends 'catalog/base.html' %}
 
-{% block content %}
-<div class="container">
-    <div class="text-center mb-5">
-        <h1 class="display-4">Контакты</h1>
-        <p class="lead">Свяжитесь с нами для получения дополнительной информации</p>
-    </div>
+{% block title %}Контакты - Skystore{% endblock %}
 
-    <div class="row">
-        <div class="col-lg-8 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title mb-4">Наши контактные данные</h5>
-                    {% if contact_info %}
-                        <table class="table table-striped">
-                            <tr>
-                                <td class="w-25">Адрес</td>
-                                <td>{{ contact_info.address }}</td>
-                            </tr>
-                            <tr>
-                                <td class="w-25">Телефон</td>
-                                <td>{{ contact_info.phone }}</td>
-                            </tr>
-                            <tr>
-                                <td class="w-25">Email</td>
-                                <td>{{ contact_info.email }}</td>
-                            </tr>
-                        </table>
-                    {% else %}
-                        <p>Контактная информация отсутствует.</p>
-                    {% endif %}
-                </div>
+{% block content %}
+<h1 class="mb-4">Контакты</h1>
+<div class="row">
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Наши контактные данные</h5>
+                {% if contact_info %}
+                    <p><strong>Адрес:</strong> {{ contact_info.address }}</p>
+                    <p><strong>Телефон:</strong> {{ contact_info.phone }}</p>
+                    <p><strong>Email:</strong> {{ contact_info.email }}</p>
+                {% else %}
+                    <p>Контактная информация отсутствует.</p>
+                {% endif %}
             </div>
         </div>
-        <div class="col-lg-4">
-            <div class="contact-form">
-                <h5 class="mb-4">Свяжитесь с нами</h5>
-                <form id="contactForm" method="post" action="">
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Свяжитесь с нами</h5>
+                <form method="post">
                     {% csrf_token %}
                     <div class="mb-3">
                         <label for="name" class="form-label">Имя</label>
-                        <input type="text" name="name" class="form-control" id="name" placeholder="Ваше имя" required>
+                        <input type="text" class="form-control" id="name" name="name" required>
                     </div>
                     <div class="mb-3">
                         <label for="phone" class="form-label">Телефон</label>
-                        <input type="text" name="phone" class="form-control" id="phone" placeholder="Контактный телефон" required>
+                        <input type="tel" class="form-control" id="phone" name="phone" required>
                     </div>
                     <div class="mb-3">
                         <label for="message" class="form-label">Сообщение</label>
-                        <textarea name="message" class="form-control" id="message" rows="4" placeholder="Ваше сообщение" required></textarea>
+                        <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary">Отправить</button>
                 </form>
@@ -56,52 +43,4 @@
         </div>
     </div>
 </div>
-
-<!-- Модальное окно -->
-<div class="modal fade" id="thankYouModal" tabindex="-1" aria-labelledby="thankYouModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="thankYouModalLabel">Спасибо за ваше сообщение!</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        Мы получили ваше сообщение и свяжемся с вами в ближайшее время.
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Закрыть</button>
-      </div>
-    </div>
-  </div>
-</div>
-{% endblock %}
-
-{% block extra_js %}
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('contactForm');
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        fetch('', {
-            method: 'POST',
-            body: new FormData(form),
-            headers: {
-                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
-            },
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.status === 'success') {
-                var modal = new bootstrap.Modal(document.getElementById('thankYouModal'));
-                modal.show();
-                form.reset();
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-    });
-});
-</script>
 {% endblock %}
