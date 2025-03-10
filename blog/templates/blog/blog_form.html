@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if form.instance.pk %}Редактировать{% else %}Создать{% endif %} пост{% endblock %}
+
+{% block content %}
+<h1>{% if form.instance.pk %}Редактировать{% else %}Создать{% endif %} пост</h1>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% for field in form %}
+        <div class="form-group">
+            {{ field.label_tag }}
+            {{ field }}
+            {% if field.help_text %}
+                <small>{{ field.help_text }}</small>
+            {% endif %}
+            {% for error in field.errors %}
+                <p class="error">{{ error }}</p>
+            {% endfor %}
+        </div>
+    {% endfor %}
+    <button type="submit">Сохранить</button>
+    <a href="{% url 'blog_list' %}" class="button">Отмена</a>
+</form>
+{% endblock %}
