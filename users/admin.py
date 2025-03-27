@@ -4,7 +4,6 @@ from .models import User  # Импортируем User из users.models
 
 @admin.register(User)
 class CustomUserAdmin(UserAdmin):
-    """Административная панель для модели пользователя"""
     
     list_display = ('email', 'username', 'first_name', 'last_name', 'is_staff', 'country')
     search_fields = ('email', 'username', 'first_name', 'last_name', 'country')

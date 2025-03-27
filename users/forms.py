@@ -7,7 +7,6 @@ User = get_user_model()
 
 
 class UserRegistrationForm(UserCreationForm):
-    """Форма для регистрации пользователя"""
     
     email = forms.EmailField(
         label='Email',
@@ -41,7 +40,6 @@ class UserRegistrationForm(UserCreationForm):
 
 
 class UserLoginForm(AuthenticationForm):
-    """Форма для авторизации пользователя"""
     
     username = forms.EmailField(
         label='Email',
@@ -54,7 +52,6 @@ class UserLoginForm(AuthenticationForm):
 
 
 class UserProfileForm(forms.ModelForm):
-    """Форма для редактирования профиля пользователя"""
     
     class Meta:
         model = User

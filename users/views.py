@@ -12,8 +12,7 @@ from .models import User
 
 
 class UserRegistrationView(CreateView):
-    """Представление для регистрации пользователя"""
-    
+
     model = User
     form_class = UserRegistrationForm
     template_name = 'users/registration.html'
@@ -43,7 +42,6 @@ class UserRegistrationView(CreateView):
 
 
 class UserLoginView(LoginView):
-    """Представление для авторизации пользователя"""
     
     form_class = UserLoginForm
     template_name = 'users/login.html'
@@ -53,20 +51,17 @@ class UserLoginView(LoginView):
 
 
 class UserLogoutView(LogoutView):
-    """Представление для выхода пользователя"""
-    
+
     next_page = reverse_lazy('home')
 
 
 @login_required
 def profile_view(request):
-    """Представление для просмотра профиля пользователя"""
     
     return render(request, 'users/profile.html', {'user': request.user})
 
 
 class UserProfileUpdateView(UpdateView):
-    """Представление для редактирования профиля пользователя"""
     
     model = User
     form_class = UserProfileForm
