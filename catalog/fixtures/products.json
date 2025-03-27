@@ -1,0 +1,38 @@
+[
+    {
+      "model": "catalog.product",
+      "pk": 1,
+      "fields": {
+        "name": "Смартфон",
+        "description": "Новейший смартфон с отличной камерой",
+        "price": "999.99",
+        "category": 1,
+        "created_at": "2024-02-19T12:00:00Z",
+        "updated_at": "2024-02-19T12:00:00Z"
+      }
+    },
+    {
+      "model": "catalog.product",
+      "pk": 2,
+      "fields": {
+        "name": "Ноутбук",
+        "description": "Мощный ноутбук для работы и игр",
+        "price": "1499.99",
+        "category": 1,
+        "created_at": "2024-02-19T12:00:00Z",
+        "updated_at": "2024-02-19T12:00:00Z"
+      }
+    },
+    {
+      "model": "catalog.product",
+      "pk": 3,
+      "fields": {
+        "name": "Научная фантастика",
+        "description": "Бестселлер в жанре научной фантастики",
+        "price": "19.99",
+        "category": 2,
+        "created_at": "2024-02-19T12:00:00Z",
+        "updated_at": "2024-02-19T12:00:00Z"
+      }
+    }
+  ]

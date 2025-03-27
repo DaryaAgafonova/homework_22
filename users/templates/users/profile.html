@@ -1,0 +1,60 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Профиль - Skystore{% endblock %}
+
+{% block content %}
+<h1 class="page-title">Профиль пользователя</h1>
+
+<div class="profile-container">
+    <div class="profile-header">
+        <div class="profile-avatar">
+            {% if user.avatar %}
+                <img src="{{ user.avatar.url }}" alt="{{ user.email }}">
+            {% else %}
+                <div class="avatar-placeholder">{{ user.email|first|upper }}</div>
+            {% endif %}
+        </div>
+        <div class="profile-info">
+            <h2 class="profile-name">
+                {% if user.first_name or user.last_name %}
+                    {{ user.first_name }} {{ user.last_name }}
+                {% else %}
+                    {{ user.email }}
+                {% endif %}
+            </h2>
+            <p class="profile-email">{{ user.email }}</p>
+            <a href="{% url 'users:profile_edit' %}" class="btn">Редактировать профиль</a>
+        </div>
+    </div>
+    
+    <div class="profile-details">
+        <div class="detail-card">
+            <h3 class="detail-title">Контактная информация</h3>
+            <div class="detail-item">
+                <span class="detail-label">Email:</span>
+                <span class="detail-value">{{ user.email }}</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Телефон:</span>
+                <span class="detail-value">{{ user.phone_number|default:"Не указан" }}</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Страна:</span>
+                <span class="detail-value">{{ user.country|default:"Не указана" }}</span>
+            </div>
+        </div>
+        
+        <div class="detail-card">
+            <h3 class="detail-title">Информация об аккаунте</h3>
+            <div class="detail-item">
+                <span class="detail-label">Дата регистрации:</span>
+                <span class="detail-value">{{ user.date_joined|date:"d.m.Y" }}</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Последний вход:</span>
+                <span class="detail-value">{{ user.last_login|date:"d.m.Y H:i"|default:"Нет данных" }}</span>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

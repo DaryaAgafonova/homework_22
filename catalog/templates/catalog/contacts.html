@@ -1,0 +1,38 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Контакты - Skystore{% endblock %}
+
+{% block content %}
+<div class="contacts-container">
+    <div class="contacts-header">
+        <h1 class="contacts-title">Контакты</h1>
+        <p class="contacts-subtitle">Мы всегда рады помочь вам</p>
+    </div>
+    
+    <div class="contacts-content">
+        <div>
+            <div class="contact-group">
+                <span class="contact-label">Адрес</span>
+                <span class="contact-value">г. Москва, ул. Примерная, д. 123</span>
+            </div>
+            
+            <div class="contact-group">
+                <span class="contact-label">Телефон</span>
+                <span class="contact-value"><a href="tel:+71234567890">+7 (123) 456-78-90</a></span>
+            </div>
+        </div>
+        
+        <div>
+            <div class="contact-group">
+                <span class="contact-label">Email</span>
+                <span class="contact-value"><a href="mailto:info@skystore.ru">info@skystore.ru</a></span>
+            </div>
+            
+            <div class="contact-group">
+                <span class="contact-label">Время работы</span>
+                <span class="contact-value">Пн-Пт с 9:00 до 18:00</span>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
