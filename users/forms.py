@@ -33,7 +33,7 @@ class UserRegistrationForm(UserCreationForm):
     
     def save(self, commit=True):
         user = super().save(commit=False)
-        user.username = user.email  # Используем email в качестве username
+        user.username = user.email
         if commit:
             user.save()
         return user

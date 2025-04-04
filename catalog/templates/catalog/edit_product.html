@@ -2,13 +2,7 @@
 
 {% block content %}
 <div class="form-container">
-    <h1 class="form-title">
-        {% if object %}
-            Редактирование продукта
-        {% else %}
-            Добавление нового продукта
-        {% endif %}
-    </h1>
+    <h1 class="form-title">Редактирование продукта</h1>
     
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
@@ -55,9 +49,9 @@
         
         <div class="form-group">
             <label for="{{ form.image.id_for_label }}" class="form-label">{{ form.image.label }}</label>
-            {% if object and object.image %}
+            {% if product.image %}
                 <div class="mb-2">
-                    <img src="{{ object.image.url }}" alt="{{ object.name }}" style="max-width: 200px; max-height: 200px;">
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}" style="max-width: 200px; max-height: 200px;">
                 </div>
             {% endif %}
             {{ form.image }}
@@ -67,11 +61,7 @@
         </div>
         
         <div class="form-actions">
-            {% if object %}
-                <a href="{% url 'product_detail' object.pk %}" class="btn btn-secondary">Отмена</a>
-            {% else %}
-                <a href="{% url 'product_list' %}" class="btn btn-secondary">Отмена</a>
-            {% endif %}
+            <a href="{% url 'product_detail' product.pk %}" class="btn btn-secondary">Отмена</a>
             <button type="submit" class="btn btn-primary">Сохранить</button>
         </div>
     </form>

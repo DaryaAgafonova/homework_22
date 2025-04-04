@@ -4,13 +4,13 @@
 <div class="delete-container">
     <h1 class="delete-title">Удаление продукта</h1>
     
-    <p class="delete-message">Вы уверены, что хотите удалить продукт "{{ object.name }}"?</p>
+    <p class="delete-message">Вы уверены, что хотите удалить продукт "{{ product.name }}"?</p>
     
     <form method="post">
         {% csrf_token %}
         
         <div class="delete-actions">
-            <a href="{% url 'product_detail' object.pk %}" class="btn btn-secondary">Отмена</a>
+            <a href="{% url 'product_detail' product.pk %}" class="btn btn-secondary">Отмена</a>
             <button type="submit" class="btn btn-danger">Удалить</button>
         </div>
     </form>

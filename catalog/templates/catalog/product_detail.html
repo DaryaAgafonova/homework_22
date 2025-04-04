@@ -1,14 +1,10 @@
-{% extends 'catalog/base.html' %}
-
-{% block title %}{{ product.name }} - Skystore{% endblock %}
+{% extends 'base.html' %}
 
 {% block content %}
 <div class="product-detail-container">
     <div class="product-detail-header">
         <h1 class="product-detail-title">{{ product.name }}</h1>
-        {% if product.category %}
         <span class="product-category-badge">{{ product.category.name }}</span>
-        {% endif %}
     </div>
     
     <div class="product-detail-content">
@@ -16,25 +12,44 @@
             {% if product.image %}
                 <img src="{{ product.image.url }}" alt="{{ product.name }}">
             {% else %}
-                <img src="https://via.placeholder.com/600x400?text=Нет+изображения" alt="{{ product.name }}">
+                <img src="/static/catalog/img/placeholder.png" alt="Нет изображения">
             {% endif %}
         </div>
         
         <div class="product-detail-info">
-            <div class="product-price">₽{{ product.price }}</div>
+            <div class="product-price">{{ product.price }} ₽</div>
             
-            <div class="product-description">
-                {% if product.description %}
-                    {{ product.description|linebreaks }}
+            <div class="product-status mb-3">
+                Статус: 
+                {% if product.status == 'published' %}
+                    <span class="badge bg-success">Опубликован</span>
+                {% elif product.status == 'draft' %}
+                    <span class="badge bg-warning">Черновик</span>
                 {% else %}
-                    <p>Описание отсутствует</p>
+                    <span class="badge bg-secondary">Архивирован</span>
                 {% endif %}
             </div>
             
-            <div class="product-actions">
-                <a href="{% url 'edit_product' product.pk %}" class="btn btn-primary">Редактировать</a>
-                <a href="{% url 'delete_product' product.pk %}" class="btn btn-danger">Удалить</a>
-                <a href="{% url 'home' %}" class="btn btn-secondary">Назад к списку</a>
+            <div class="product-owner mb-3">
+                Владелец: {{ product.owner.email }}
+            </div>
+            
+            <div class="product-description">{{ product.description }}</div>
+            
+            <div class="product-actions mt-4">
+                {% if user.is_authenticated %}
+                    {% if user == product.owner or perms.catalog.change_product %}
+                        <a href="{% url 'edit_product' product.pk %}" class="btn btn-primary">Редактировать</a>
+                    {% endif %}
+                    
+                    {% if user == product.owner or perms.catalog.delete_product %}
+                        <a href="{% url 'delete_product' product.pk %}" class="btn btn-danger">Удалить</a>
+                    {% endif %}
+                    
+                    {% if user == product.owner or perms.catalog.change_product %}
+                        <a href="{% url 'change_product_status' product.pk %}" class="btn btn-secondary">Изменить статус</a>
+                    {% endif %}
+                {% endif %}
             </div>
         </div>
     </div>

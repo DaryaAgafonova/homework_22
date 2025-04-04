@@ -19,16 +19,13 @@ class UserRegistrationView(CreateView):
     success_url = reverse_lazy('home')
     
     def form_valid(self, form):
-        # Сохраняем пользователя
         response = super().form_valid(form)
         
-        # Авторизуем пользователя
         email = form.cleaned_data.get('email')
         password = form.cleaned_data.get('password1')
         user = authenticate(email=email, password=password)
         login(self.request, user)
         
-        # Отправляем приветственное письмо
         send_mail(
             'Добро пожаловать в Skystore!',
             f'Здравствуйте, {user.email}!\n\nСпасибо за регистрацию на нашем сайте. '

@@ -5,7 +5,7 @@ import re
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ['name', 'description', 'price', 'image', 'category']
+        fields = ['name', 'description', 'price', 'image', 'category', 'status']
         widgets = {
             'description': forms.Textarea(attrs={'rows': 5}),
         }
@@ -20,6 +20,8 @@ class ProductForm(forms.ModelForm):
                 field.widget.attrs['placeholder'] = 'Введите описание продукта'
             elif field_name == 'price':
                 field.widget.attrs['placeholder'] = 'Введите цену продукта'
+            elif field_name == 'status':
+                field.widget.attrs['class'] = 'form-select'
 
     def clean_name(self):
         name = self.cleaned_data['name']
@@ -68,3 +70,8 @@ class ProductForm(forms.ModelForm):
             raise forms.ValidationError('Размер файла не должен превышать 5 МБ')
         
         return image
+
+class ContactForm(forms.Form):
+    name = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ваше имя'}))
+    email = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Ваш email'}))
+    message = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 5, 'placeholder': 'Ваше сообщение'}))
