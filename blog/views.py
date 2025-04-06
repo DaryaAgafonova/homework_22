@@ -11,7 +11,8 @@ def blog_list(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     
-    return render(request, 'blog/blog_list.html', {'page_obj': page_obj})
+    return render(request, 'blog/blog_list.html', {'posts': page_obj})
+
 
 def blog_detail(request, pk):
     post = get_object_or_404(BlogPost, pk=pk, is_published=True)

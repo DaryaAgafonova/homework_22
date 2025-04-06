@@ -3,11 +3,25 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin, PermissionRequiredMixin
 from django.contrib.auth.decorators import login_required, permission_required
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, HttpResponse
 from django.contrib import messages
+from django.core.cache import cache
+from django.conf import settings
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 
 from .models import Product, Category, Contact
 from .forms import ProductForm, ContactForm
+from .services import get_products_by_category
+
+def test_redis(request):
+    visits = cache.get('visits', 0)
+    
+    visits += 1
+    
+    cache.set('visits', visits, settings.CACHE_TTL)
+    
+    return HttpResponse(f"Эта страница была просмотрена {visits} раз.")
 
 def home(request):
     products = Product.objects.filter(status='published').order_by('-created_at')[:8]
@@ -54,6 +68,23 @@ class ProductDetailView(DetailView):
         ):
             return queryset
         return queryset.filter(status='published')
+    
+    def get_object(self, queryset=None):
+        """
+        Переопределяем метод get_object для добавления кеширования
+        """
+        pk = self.kwargs.get(self.pk_url_kwarg)
+        
+        cache_key = f'product_{pk}'
+        
+        product = cache.get(cache_key)
+        
+        if product is None:
+            product = super().get_object(queryset)
+            
+            cache.set(cache_key, product, settings.CACHE_TTL)
+        
+        return product
 
 class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
@@ -85,6 +116,9 @@ class ProductUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     
     def form_valid(self, form):
         messages.success(self.request, 'Продукт успешно обновлен!')
+        cache.delete(f'product_{self.object.pk}')
+        if self.object.category:
+            cache.delete(f'category_products_{self.object.category.slug}')
         return super().form_valid(form)
 
 class ProductDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
@@ -104,6 +138,10 @@ class ProductDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         return redirect('product_detail', pk=self.get_object().pk)
     
     def delete(self, request, *args, **kwargs):
+        product = self.get_object()
+        cache.delete(f'product_{product.pk}')
+        if product.category:
+            cache.delete(f'category_products_{product.category.slug}')
         messages.success(request, 'Продукт успешно удален!')
         return super().delete(request, *args, **kwargs)
 
@@ -113,6 +151,9 @@ def unpublish_product(request, pk):
     product = get_object_or_404(Product, pk=pk)
     product.status = 'draft'
     product.save()
+    cache.delete(f'product_{pk}')
+    if product.category:
+        cache.delete(f'category_products_{product.category.slug}')
     messages.success(request, f'Продукт "{product.name}" снят с публикации.')
     return redirect('product_detail', pk=pk)
 
@@ -125,6 +166,9 @@ def publish_product(request, pk):
     
     product.status = 'published'
     product.save()
+    cache.delete(f'product_{pk}')
+    if product.category:
+        cache.delete(f'category_products_{product.category.slug}')
     messages.success(request, f'Продукт "{product.name}" опубликован.')
     return redirect('product_detail', pk=pk)
 
@@ -145,8 +189,28 @@ def change_product_status(request, pk):
         if new_status in [status[0] for status in Product.STATUS_CHOICES]:
             product.status = new_status
             product.save()
+            cache.delete(f'product_{pk}')
+            if product.category:
+                cache.delete(f'category_products_{product.category.slug}')
             messages.success(request, f'Статус продукта "{product.name}" изменен на "{dict(Product.STATUS_CHOICES)[new_status]}".')
         
         return redirect('product_detail', pk=pk)
     
     return render(request, 'catalog/change_status.html', {'product': product})
+
+def category_products(request, category_slug):
+    products = get_products_by_category(category_slug)
+    
+    try:
+        category = Category.objects.get(slug=category_slug)
+        category_name = category.name
+    except Category.DoesNotExist:
+        category_name = category_slug
+    
+    context = {
+        'products': products,
+        'category_slug': category_slug,
+        'category_name': category_name
+    }
+    
+    return render(request, 'catalog/category_products.html', context)

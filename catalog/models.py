@@ -1,17 +1,24 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
+from django.utils.text import slugify
 
 User = get_user_model()
 
 class Category(models.Model):
     name = models.CharField(max_length=255, verbose_name='Наименование')
     description = models.TextField(verbose_name='Описание', blank=True, null=True)
-    
+    slug = models.SlugField(max_length=255, unique=True, blank=True)
+
     class Meta:
         verbose_name = 'Категория'
         verbose_name_plural = 'Категории'
     
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return self.name
 

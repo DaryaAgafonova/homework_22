@@ -6,8 +6,8 @@
 <article class="post-detail">
     <h1>{{ post.title }}</h1>
     <p class="post-meta">{{ post.created_at|date:"d.m.Y H:i" }} | Просмотры: {{ post.views_count }}</p>
-    {% if post.preview %}
-        <img src="{{ post.preview.url }}" alt="{{ post.title }}" class="post-image">
+    {% if post.image %}
+    <img src="{{ post.image.url }}" alt="{{ post.title }}" class="post-image">
     {% endif %}
     <div class="post-content">
         {{ post.content|linebreaks }}

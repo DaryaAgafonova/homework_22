@@ -12,4 +12,6 @@ urlpatterns = [
     path('product/<int:pk>/publish/', views.publish_product, name='publish_product'),
     path('product/<int:pk>/unpublish/', views.unpublish_product, name='unpublish_product'),
     path('product/<int:pk>/change-status/', views.change_product_status, name='change_product_status'),
+    path('test-redis/', views.test_redis, name='test_redis'),
+    path('category/<slug:category_slug>/', views.category_products, name='category_products'),
 ]
